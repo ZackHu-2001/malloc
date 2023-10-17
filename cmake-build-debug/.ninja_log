@@ -1,0 +1,8 @@
+# ninja log v5
+0	360	1697567282802477232	CMakeFiles/malloc.dir/LinkedList.cpp.o	966cbf9dfedbb40e
+0	426	1697567282867258575	CMakeFiles/malloc.dir/main.cpp.o	ce465cc75aa1d085
+426	476	1697567282920570914	malloc	68ef2244dcacdc92
+3	560	1697572278309468790	CMakeFiles/malloc.dir/LinkedList.cpp.o	966cbf9dfedbb40e
+560	616	1697572278369018206	malloc	68ef2244dcacdc92
+2	437	1697572309337260145	CMakeFiles/malloc.dir/main.cpp.o	ce465cc75aa1d085
+437	480	1697572309382234035	malloc	68ef2244dcacdc92

@@ -1,0 +1,3 @@
+/Users/zackhu/Desktop/malloc/cmake-build-debug/CMakeFiles/malloc.dir
+/Users/zackhu/Desktop/malloc/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/zackhu/Desktop/malloc/cmake-build-debug/CMakeFiles/rebuild_cache.dir
