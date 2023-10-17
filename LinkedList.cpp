@@ -13,14 +13,15 @@ void LinkedList::print() {
     .append(std::to_string(this->length))
     .append(" ]:");
 
-    Node* tmp = head;
-    while (tmp != nullptr) {
+    Node* current = head;
+    while (current != nullptr) {
+//        std::cout << "addr: " << current->address << "\n";
         outputString.append(" [ addr:")
-                .append(std::to_string(tmp->address))
+                .append(std::to_string(current->address))
                 .append(" sz:")
-                .append(std::to_string(tmp->size))
+                .append(std::to_string(current->size))
                 .append(" ]");
-        tmp = tmp->next;
+        current = current->next;
     }
     std::cout << outputString <<"\n";
 }
@@ -36,16 +37,16 @@ void LinkedList::addNode(Node *node) {
                 node->next = head;
                 head = node;
             } else {
-                Node* tmp = head;
-                while (tmp->next != nullptr) {
-                    if (tmp->next->address >= node->address + node->size) {
-                        node->next = tmp->next;
-                        tmp->next = node;
+                Node* current = head;
+                while (current->next != nullptr) {
+                    if (current->next->address >= node->address + node->size) {
+                        node->next = current->next;
+                        current->next = node;
                         return;
                     }
-                    tmp = tmp->next;
+                    current = current->next;
                 }
-                tmp->next = node;
+                current->next = node;
             }
         }
         length += 1;
@@ -53,19 +54,32 @@ void LinkedList::addNode(Node *node) {
 }
 
 Node* LinkedList::applyWorstFit(int size, int* searchCnt) {
-    Node* tmp = head;
+    Node* current = head;
+    Node* before = nullptr;
     Node* maxSizedNode = nullptr;
+    Node* beforeMaxSizedNode = nullptr;
     int maxSize = 0;
-    while (tmp != nullptr) {
-        if (tmp->size > maxSize) {
-            maxSizedNode = tmp;
-            maxSize = tmp->size;
+    while (current != nullptr) {
+        if (current->size > maxSize) {
+            maxSizedNode = current;
+            beforeMaxSizedNode = before;
+            maxSize = current->size;
         }
-        tmp = tmp->next;
+        before = current;
+        current = current->next;
         *searchCnt += 1;
     }
     if (maxSizedNode != nullptr || size <= maxSize) {
-        return maxSizedNode->splitNode(size);
+        if (size == maxSize) {
+            if (beforeMaxSizedNode == nullptr) {
+                head = maxSizedNode->next;
+            } else {
+                beforeMaxSizedNode->next = maxSizedNode->next;
+            }
+            return maxSizedNode;
+        } else {
+            return maxSizedNode->splitNode(size);
+        }
     } else {
         // fail to find a place to allocate
         std::cout << "failed to find a place to fit in\n";
@@ -73,38 +87,47 @@ Node* LinkedList::applyWorstFit(int size, int* searchCnt) {
     }
 }
 
-//
-//Node* LinkedList::applyFirstFit(int size, int* searchCnt) {
-//    Node* tmp = head;
-//    Node* maxSizedNode = nullptr;
-//    int maxSize = 0;
-//    while (tmp != nullptr) {
-//        if (tmp->size > maxSize) {
-//            maxSizedNode = tmp;
-//            maxSize = tmp->size;
-//        }
-//        tmp = tmp->next;
-//        *searchCnt += 1;
-//    }
-//    if (maxSizedNode != nullptr || size <= maxSize) {
-//        return maxSizedNode->splitNode(size);
-//    } else {
-//        // fail to find a place to allocate
-//        std::cout << "failed to find a place to fit in\n";
-//        return nullptr;
-//    }
-//}
-//
+
+Node* LinkedList::applyFirstFit(int size, int* searchCnt) {
+    Node* current = head;
+    Node* before = nullptr;
+    while (current != nullptr) {
+        if (current->size >= size) {
+            break;
+        } else {
+            before = current;
+            current = current->next;
+            *searchCnt += 1;
+        }
+    }
+    if (current != nullptr) {
+        if (current->size == size) {
+            if (before == nullptr) {
+                head = current->next;
+            } else {
+                before->next = current->next;
+            }
+            return current;
+        } else {
+            return current->splitNode(size);
+        }
+    } else {
+        // fail to find a place to allocate
+        std::cout << "failed to find a place to fit in\n";
+        return nullptr;
+    }
+}
+
 //Node* LinkedList::applyBestFit(int size, int* searchCnt) {
-//    Node* tmp = head;
+//    Node* current = head;
 //    Node* maxSizedNode = nullptr;
 //    int suitableSize = 0;
-//    while (tmp != nullptr) {
-//        if (tmp->size > size && tmp->size > suitableSize) {
-//            maxSizedNode = tmp;
-//            suitableSize = tmp->size;
+//    while (current != nullptr) {
+//        if (current->size > size && current->size > suitableSize) {
+//            maxSizedNode = current;
+//            suitableSize = current->size;
 //        }
-//        tmp = tmp->next;
+//        current = current->next;
 //        *searchCnt += 1;
 //    }
 //    if (maxSizedNode != nullptr || size <= suitableSize) {

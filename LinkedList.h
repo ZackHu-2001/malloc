@@ -13,16 +13,14 @@ struct Node {
     Node* next;
     Node(int address, int size) : address(address), size(size) {}
 
+    // when this method called, we make sure the required size smaller
+    // than this block's size
     Node* splitNode(int size) {
-        if (size == this->size) {
-            return this;
-        } else {
-            auto* newNode = new Node(this->address, size);
-            newNode->next = this;
-            this->address = this->address + size;
-            this->size = this->size - size;
-            return newNode;
-        }
+        auto* newNode = new Node(this->address, size);
+        newNode->next = this;
+        this->address = this->address + size;
+        this->size = this->size - size;
+        return newNode;
     }
 };
 
@@ -34,6 +32,7 @@ public:
     void addNode(Node* node);
     void print();
     Node* applyWorstFit(int size, int* searchCnt);
+    Node* applyFirstFit(int size, int* searchCnt);
 
 };
 

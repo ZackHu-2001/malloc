@@ -14,6 +14,7 @@ int main() {
     int baseAddr = 1000;
     int heapSize = 100;
 //    int allocs[] = {1,2,3,4,5,6,-0,-1,-2,-3,-4,-5};
+//    int allocs[] = {6,0,6,-1,7,-2,3,-3,2,-4,1,-5};
     int allocs[] = {1,0,2,-1,3,-2,4,-3,5,-4,6,-5};
 
     Node firstNode = Node(baseAddr, heapSize);
@@ -27,7 +28,9 @@ int main() {
     for (int i: allocs) {
         if (i > 0) {
             int searchCnt = 0;
-            Node* tmp = linkedList->applyWorstFit(i, &searchCnt);
+//            Node* tmp = linkedList->applyWorstFit(i, &searchCnt);
+//            std::cout << "here\n";
+            Node* tmp = linkedList->applyFirstFit(i, &searchCnt);
             mallocedMap[allocCnt] = tmp;
             std::cout << "ptr[" << allocCnt << "] = Alloc(" << i <<") returned " << tmp->address;
             std::cout << " (searched " << searchCnt << " elements)\n";
